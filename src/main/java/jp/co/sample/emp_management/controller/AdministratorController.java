@@ -76,19 +76,26 @@ public class AdministratorController {
 	public String insert(@Validated InsertAdministratorForm form,
 			BindingResult result,
 			Model model) {
+		//未入力値チェックをします
 		if(result.hasErrors()) {
 			return toInsert(model);
 		}
-		if(repository.findByMailAddress(form.getMailAddress()) == null){
-			Administrator administrator = new Administrator();
-			// フォームからドメインにプロパティ値をコピー
-			BeanUtils.copyProperties(form, administrator);
-			administratorService.insert(administrator);
-		}else {
+		//既に登録されているメールアドレスかチェックします
+		if(repository.findByMailAddress(form.getMailAddress()) != null) {
 			result.rejectValue("mailAddress", null, "既に登録されたメールアドレスです");
-			System.out.println(result);
 			return "administrator/insert";
 		}
+		//パスワードとパスワード確認用の値が同じかチェックします
+		if(form.getPassword() != form.getConfirmPassword()) {
+			result.rejectValue("password", null , "パスワードが一致しません");
+			return "administrator/insert";
+		}
+		
+		Administrator administrator = new Administrator();
+		// フォームからドメインにプロパティ値をコピー
+		BeanUtils.copyProperties(form, administrator);
+		administratorService.insert(administrator);
+		
 		return "redirect:/";
 	}
 

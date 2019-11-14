@@ -18,6 +18,13 @@ public class InsertAdministratorForm {
 	/** パスワード */
 	@NotBlank(message = "パスワードを入力してください")
 	private String password;
+	private String confirmPassword;
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
 	public String getName() {
 		return name;
 	}
