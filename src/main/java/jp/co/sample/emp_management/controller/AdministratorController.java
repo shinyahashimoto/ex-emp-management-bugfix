@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jp.co.sample.emp_management.domain.Administrator;
 import jp.co.sample.emp_management.form.InsertAdministratorForm;
 import jp.co.sample.emp_management.form.LoginForm;
+import jp.co.sample.emp_management.repository.AdministratorRepository;
 import jp.co.sample.emp_management.service.AdministratorService;
 
 /**
@@ -28,6 +29,9 @@ public class AdministratorController {
 
 	@Autowired
 	private AdministratorService administratorService;
+	
+	@Autowired
+	private AdministratorRepository repository;
 	
 	@Autowired
 	private HttpSession session;
@@ -78,7 +82,12 @@ public class AdministratorController {
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
-		administratorService.insert(administrator);
+		repository.findByMailAddress(form.getMailAddress());
+		if(form.getMailAddress().equals(repository.findByMailAddress(form.getMailAddress()))){
+			//エラー
+		}else {
+			administratorService.insert(administrator);
+		}
 		return "redirect:/";
 	}
 
