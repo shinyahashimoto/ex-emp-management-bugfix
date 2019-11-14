@@ -90,7 +90,7 @@ public class AdministratorController {
 			result.rejectValue("password", null , "パスワードが一致しません");
 			return "administrator/insert";
 		}
-		
+		//エラーがない場合に登録処理を行います
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
@@ -128,6 +128,7 @@ public class AdministratorController {
 			model.addAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 			return toLogin();
 		}
+		session.setAttribute("administratorName", administrator.getName());
 		return "forward:/employee/showList";
 	}
 	
