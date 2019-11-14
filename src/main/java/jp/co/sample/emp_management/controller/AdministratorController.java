@@ -79,14 +79,15 @@ public class AdministratorController {
 		if(result.hasErrors()) {
 			return toInsert(model);
 		}
-		Administrator administrator = new Administrator();
-		// フォームからドメインにプロパティ値をコピー
-		BeanUtils.copyProperties(form, administrator);
-		repository.findByMailAddress(form.getMailAddress());
-		if(form.getMailAddress().equals(repository.findByMailAddress(form.getMailAddress()))){
-			//エラー
-		}else {
+		if(repository.findByMailAddress(form.getMailAddress()) == null){
+			Administrator administrator = new Administrator();
+			// フォームからドメインにプロパティ値をコピー
+			BeanUtils.copyProperties(form, administrator);
 			administratorService.insert(administrator);
+		}else {
+			result.rejectValue("mailAddress", null, "既に登録されたメールアドレスです");
+			System.out.println(result);
+			return "administrator/insert";
 		}
 		return "redirect:/";
 	}
