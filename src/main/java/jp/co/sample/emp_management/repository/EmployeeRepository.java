@@ -58,6 +58,20 @@ public class EmployeeRepository {
 	}
 
 	/**
+	 * 入力された文字列で曖昧検索をします.
+	 * 
+	 * @param name 検索する文字列
+	 * @return 検索にヒットした従業員リスト
+	 */
+	public List<Employee> findByFuzzyName(String name) {
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees WHERE name LIKE :name";
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", '%' + name + '%');
+
+		return template.query(sql, param, EMPLOYEE_ROW_MAPPER);
+	}
+
+	/**
 	 * 主キーから従業員情報を取得します.
 	 * 
 	 * @param id 検索したい従業員ID

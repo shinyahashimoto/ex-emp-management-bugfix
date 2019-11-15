@@ -55,6 +55,28 @@ public class EmployeeController {
 		return "employee/list";
 	}
 
+	/////////////////////////////////////////////////////
+	// ユースケース：曖昧検索で検索された従業員一覧を表示する
+	/////////////////////////////////////////////////////
+
+	@RequestMapping("/find-by-fuzzy-name")
+	public String findByFuzzyName(String name, Model model) {
+		List<Employee> employeeList;
+		
+		if(name == null) {
+			employeeList = employeeService.showList();
+		}else {
+			employeeList = employeeService.showListByFuzzyFind(name);
+		}
+		if(employeeList.size() == 0) {
+			employeeList = employeeService.showList();
+			String message = "1件もありませんでした。";
+			model.addAttribute("message", message);
+		}
+		model.addAttribute("employeeList", employeeList);
+		return "employee/list";
+	}
+	
 	
 	/////////////////////////////////////////////////////
 	// ユースケース：従業員詳細を表示する

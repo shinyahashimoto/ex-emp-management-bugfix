@@ -32,6 +32,11 @@ public class EmployeeService {
 		return employeeList;
 	}
 	
+	public List<Employee> showListByFuzzyFind(String name){
+		List<Employee> employeeList = employeeRepository.findByFuzzyName(name);
+		return employeeList;
+	}
+	
 	/**
 	 * 従業員情報を取得します.
 	 * 

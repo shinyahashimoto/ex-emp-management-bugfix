@@ -63,6 +63,13 @@
 <!-- ここから上を編集する必要はありません -->
 
 <!-- ここにモックのtable要素を貼り付けます -->
+				<br>
+				<form th:action="@{/employee/find-by-fuzzy-name}" method="post">
+					曖昧な検索
+					<input type="text" name="name">
+					<button>検索！</button>
+					<div th:text="${message}" style="color:red"></div>
+				</form>
 
 				<table class="table table-striped">
 					<thead>
